@@ -1,0 +1,47 @@
+name: Docker Image CI
+
+on:
+  push:
+    tags:
+      - 'v*.*.*'
+
+env:
+  REGISTRY: ghcr.io
+  IMAGE_NAME: lol-ps-challenge
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      packages: write 
+    steps:
+    - uses: actions/checkout@v4.1.2
+    - name: Set env
+      run: |
+        echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+        echo "REGISTRY=${{env.REGISTRY}}" >> $GITHUB_ENV
+        
+    - name: Docker Login
+      uses: docker/login-action@v3.1.0
+      with:
+        registry: ${{ env.REGISTRY }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.DOCKER_TOKEN }}
+        
+      
+    - name: Extract metadata (tags, labels) for Docker
+      id: meta_api
+      uses: docker/metadata-action@v5.5.1
+      with:
+        images: ${{env.REGISTRY}}/${{env.IMAGE_NAME}}
+      
+    - name: Build and push Docker image
+      uses: docker/build-push-action@v5.3.0
+      with:
+        context: .
+        file: ./Dockerfile
+        push: true
+        tags: ${{ steps.meta_api.outputs.tags }}
+        labels: ${{ steps.meta_api.outputs.labels }}
+
