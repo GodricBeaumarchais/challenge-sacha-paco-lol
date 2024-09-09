@@ -64,8 +64,8 @@ export default function Card({ player }: { player: Player }) {
 
 
             <div>
-                
-                
+
+
                 <img src={Master.src} alt="Master" className='h-12 mx-auto' />
                 <p className='font-spiegel-regular text-gold-100 '>{100 + " / " + player.objectif} </p>
             </div>
@@ -75,13 +75,13 @@ export default function Card({ player }: { player: Player }) {
             {soloRank ? (
                 <div>
                     <p>{soloRank.tier}</p>
-                    <p>{soloRank.leaguePoints  + " / " + player.objectif} </p>
+                    <p>{soloRank.leaguePoints + " / " + player.objectif} </p>
                 </div>
             ) : error ? (
                 <p>{error}</p>
             ) : (
                 <p>Chargement...</p>
-            )} 
+            )}
         </div>
     );
 }
