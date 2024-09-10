@@ -4,6 +4,9 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import Master from '../../../public/Season_2023_-_Master.png';
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 interface Player {
     id: number;
@@ -17,15 +20,15 @@ interface Player {
 export default function Card({ player }: { player: Player }) {
     const [soloRank, setSoloRank] = useState<{ tier: string; leaguePoints: number } | null>(null);
     const [error, setError] = useState<string | null>(null);
-
+    const apiKey = process.env.NEXT_PUBLIC_API_KEY;
     useEffect(() => {
         const fetchData = async () => {
             const options = {
                 method: 'GET',
                 url: 'https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/' + player.summonerId,
-                params: { api_key: 'RGAPI-a0b01202-e163-4427-bd67-9ab563ca826a' },
+                params: { api_key: apiKey },
                 headers: {
-                    'X-Riot-Token': 'RGAPI-a0b01202-e163-4427-bd67-9ab563ca826a',
+                    'X-Riot-Token': apiKey,
                     'Content-Type': ''
                 }
             };
