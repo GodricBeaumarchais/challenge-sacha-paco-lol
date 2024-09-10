@@ -7,7 +7,7 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: lol-ps-challenge
+  IMAGE_NAME: GodricBeaumarchais/lol-ps-challenge
 
 jobs:
   build:
@@ -27,7 +27,7 @@ jobs:
       with:
         registry: ${{ env.REGISTRY }}
         username: ${{ github.actor }}
-        password: ${{ secrets.DOCKER_TOKEN }}
+        password: ${{ secrets.DOCKERSECRET }}
         
       
     - name: Extract metadata (tags, labels) for Docker
