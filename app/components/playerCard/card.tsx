@@ -27,10 +27,7 @@ export default function Card({ player }: { player: Player }) {
                 method: 'GET',
                 url: 'https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/' + player.summonerId,
                 params: { api_key: apiKey },
-                headers: {
-                    'X-Riot-Token': apiKey,
-                    'Content-Type': ''
-                }
+                
             };
 
             try {
@@ -52,7 +49,7 @@ export default function Card({ player }: { player: Player }) {
         };
 
         fetchData();
-    }, [player.summonerId]);
+    }, [apiKey, player.summonerId]);
 
     return (
         <div className="relative bg-Hextech-600 inline-block  rounded border border-gold-400 p-5 pr-8 pl-8 bg-opacity-40 ">
@@ -70,15 +67,14 @@ export default function Card({ player }: { player: Player }) {
 
 
                 <img src={Master.src} alt="Master" className='h-12 mx-auto' />
-                <p className='font-spiegel-regular text-gold-100 '>{100 + " / " + player.objectif} </p>
+                {/* <p className='font-spiegel-regular text-gold-100 '>{100 + " / " + player.objectif} </p> */}
             </div>
 
 
             {/* Affichage des données récupérées pour RANKED_SOLO_5x5 */}
             {soloRank ? (
                 <div>
-                    <p>{soloRank.tier}</p>
-                    <p>{soloRank.leaguePoints + " / " + player.objectif} </p>
+                    <p className='font-spiegel-regular text-gold-100 '>{soloRank.leaguePoints + " / " + player.objectif} </p>
                 </div>
             ) : error ? (
                 <p>{error}</p>
