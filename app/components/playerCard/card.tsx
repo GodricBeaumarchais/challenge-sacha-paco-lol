@@ -20,23 +20,20 @@ interface Player {
 export default function Card({ player }: { player: Player }) {
     const [soloRank, setSoloRank] = useState<{ tier: string; leaguePoints: number } | null>(null);
     const [error, setError] = useState<string | null>(null);
-    const apiKey = process.env.NEXT_PUBLIC_API_KEY;
     useEffect(() => {
         const fetchData = async () => {
             const options = {
                 method: 'GET',
-                url: 'https://euw1.api.riotgames.com/lol/league/v4/entries/by-summoner/' + player.summonerId,
-                params: { api_key: apiKey },
-                
+                url: `https://riot-proxy.maximetechlab.fr/riot-api/${player.summonerId}`,
             };
-
+    
             try {
                 const response = await axios.request(options);
-
+    
                 // Filtrer les données pour trouver l'entrée RANKED_SOLO_5x5
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
                 const rankedSolo = response.data.find((entry: any) => entry.queueType === "RANKED_SOLO_5x5");
-
+    
                 if (rankedSolo) {
                     setSoloRank({ tier: rankedSolo.tier, leaguePoints: rankedSolo.leaguePoints });
                 } else {
@@ -47,9 +44,9 @@ export default function Card({ player }: { player: Player }) {
                 console.error(err);
             }
         };
-
+    
         fetchData();
-    }, [apiKey, player.summonerId]);
+    }, [player.summonerId]);
 
     return (
         <div className="relative bg-Hextech-600 inline-block  rounded border border-gold-400 p-5 pr-8 pl-8 bg-opacity-40 ">
